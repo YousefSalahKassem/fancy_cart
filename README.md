@@ -1,6 +1,6 @@
-# Cart System Package
+#Fancy Cart Package
 
-### Welcome to the cart system package this package depend on:
+### Welcome to the Fancy Cart package this package depend on:
 
 1: Hive Local Storage<br />
 2: Riverpod State Management
@@ -13,7 +13,7 @@
 2: How it works<br />
 3: Explain each method inside notifier<br />
 4: Example how to implement it
-
+5: Types of Cart
 ------------
 # Features
 1: add items inside cart<br />
@@ -22,6 +22,7 @@
 4: increment and decrement numer of quantities<br />
 5: get total price for cart<br />
 6: get total items inside cart
+7: types of fancy cart pages
 
 ------------  
 # How it Works
@@ -43,40 +44,7 @@
   final Map<String, dynamic> additionalData;
 ```
 
-in the class model:
-
-```dart 
-@HiveType(typeId: 1)
-class CartItem extends HiveObject with EquatableMixin {
-  @HiveField(0)
-  final int id;
-  @HiveField(1)
-  final String name;
-  @HiveField(2)
-  final String image;
-  @HiveField(3)
-  double price;
-  @HiveField(4)
-  int quantity;
-  @HiveField(5)
-  final Map<String, dynamic> additionalData;
-
-
-  CartItem({
-    required this.id,
-    required this.name,
-    required this.image,
-    required this.price,
-    required this.quantity,
-    required this.additionalData,
-  });
-
-  @override
-  List<Object?> get props => [id, name, image, additionalData];
-}
-```
 ------------
-### Second thing go inside card notifier class and let's explain each method how it works for cart system
 
 ## Initialize
 init hive and register cart item adapter then open cart box to store cart items,<br />as its depend on hive so we need to initialize it in main.dart
@@ -104,15 +72,6 @@ if item already exist in cart then update its quantity<br />
 else add it to cart.
 ```dart 
   Future<void> addItem(CartItem cart) async {
-    if (_cartList.contains(cart)) {
-      final int index = _cartList.indexOf(cart);
-      incrementItemQuantity(_cartList[index]);
-      getPriceForItem(cart);
-    } else {
-      await _cartService.add(cart);
-      _cartList.add(cart);
-    }
-    notifyListeners();
 
   }
 ``` 
@@ -120,26 +79,21 @@ else add it to cart.
 ## Remove Item from Cart
 ```dart 
 Future<void> removeItem(CartItem cart) async {
-    await _cartService.remove(cart);
-    _cartList.remove(cart);
-    notifyListeners();
+
 }
 ```
 ------------
 ## Fetch items
 ```dart 
   Future<void> fetchCart() async {
-    _cartList = await _cartService.fetch();
-    notifyListeners();
+
   }
 ```
 ------------
 ## Clear Cart
 ```dart 
   Future<void> clearCart() async {
-    await _cartService.clear();
-    _cartList = [];
-    notifyListeners();
+
   }
 ```
 ------------
@@ -147,11 +101,6 @@ Future<void> removeItem(CartItem cart) async {
 have an option to update price for item when increment
 ```dart 
   Future<void> incrementItemQuantity(CartItem cart) async {
-    cart.quantity++;
-    await _cartService.updateQuantity(cart, cart.quantity);
-    getPriceForItem(cart);
-    await _cartService.updatePrice(cart, cart.price);
-    notifyListeners();
 
   }
 ```
@@ -167,35 +116,14 @@ there is an option [actionAfterDelete] to make action after delete item like sho
 there is an option [notDecrementedAction] to make action if item quantity is less than 1 and [deleteOption] is false like showing snackBar, etc.
 ```dart 
   Future<void> decrementItemQuantity(CartItem cart, {bool deleteOption = false,Function? actionAfterDelete, Function? notDecrementedAction}) async {
-    if (cart.quantity > 1) {
-      cart.quantity--;
-      await _cartService.updateQuantity(cart, cart.quantity);
-      getPriceForItem(cart);
-      await _cartService.updatePrice(cart, cart.price);
-      notifyListeners();
-    } else {
-      if (deleteOption) {
-        await removeItem(cart);
-        if(actionAfterDelete!=null){
-          actionAfterDelete();
-        }
-      } else {
-        if(notDecrementedAction!=null){
-          notDecrementedAction();
-        }
-      }
-    }
+    
   }
 ```
 ------------
 ## get total price in cart
 ```dart 
   double getTotalPrice() {
-    double totalPrice = 0;
-    for (final CartItem cart in _cartList) {
-      totalPrice += cart.price * cart.quantity;
-    }
-    return totalPrice;
+
   }
 ```
 ------------
@@ -205,11 +133,7 @@ if you set it to true then it will update item price in cart by multiplying item
 else it will return item price without updating it<br />
 ```dart
   double getPriceForItem(CartItem cart, {bool updatePrice = false}) {
-    if(updatePrice){
-      final double total = cart.quantity * cart.price;
-      return total;
-    }
-    return cart.price;
+
   }
 ```
 ------------
@@ -218,15 +142,7 @@ if [needToIncludeQuantity] is true then it will return total number of items in 
 else it will return number of items in cart<br />
 ```dart
   int getNumberOfItemsInCart({bool needToIncludeQuantity = true}) {
-    if (needToIncludeQuantity){
-      int totalQuantity = 0;
-      for (final CartItem cart in _cartList) {
-        totalQuantity += cart.quantity;
-      }
-      return totalQuantity;
-    } else {
-      return _cartList.length;
-    }
+
   }
 ```
 ------------
@@ -238,104 +154,181 @@ init cart notifier inside main
 ```dart
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  /// Initialize cart notifier
-  await CartNotifier.initialize();
-  runApp(const ProviderScope(child: MyApp()));
+  
+  /// initialize fancy cart
+  initializeFancyCart(
+    child: const MyApp(),
+  );
 }
 ```
 ------------
-## cart screen
+## Example
 
-get cart items
 ```dart
-final cartList = ref.watch(CartNotifier.provider).cartList;
-```
-notify cart notifier to do some actions
-```dart
-final cartNotifier = ref.watch(CartNotifier.provider.notifier);
-```
-------------
-## add item
-```dart
-IconButton(
-          icon: const Icon(Icons.add),
-          onPressed: () {
-            cartNotifier.addItem(
-                CartItem(
-                    id: 1,
-                    name: "item 1",
-                    image: "image",
-                    price: 10,
-                    quantity: 1,
-                    additionalData: {})
-            );
-          },
-        ),
-```
-------------
-## clear cart
-```dart
-IconButton(
-            onPressed: () {
-              ref.read(CartNotifier.provider.notifier).clearCart();
-            },
-            icon: const Icon(Icons.delete),
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // initialize fancy cart
+  initializeFancyCart(
+    child: const MyApp(),
+  );
+
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+
+        /// Example of using Fancy Cart
+        home: Scaffold(
+          appBar: AppBar(
+            title: const Text('Test Cart'),
+            actions: [
+              // ----------------- Clear Cart ----------------- //
+              /// clear cart button with action after delete
+              ClearCartButton(
+                child: const Icon(Icons.delete),
+                actionAfterDelete: () {
+                  log("cart deleted", name: "cart deleted");
+                },
+              ),
+
+              // ----------------- Total Items in Cart ----------------- //
+              /// total items in cart, with option to include quantity or not (default is true)
+              TotalItemsCartWidget(totalItemsBuilder: (totalItems) {
+                return Text(totalItems.toString());
+              })
+            ],
           ),
-```
-------------
-## get total items in cart
-```dart
-Text('Cart Items: ${cartNotifier.getNumberOfItemsInCart()}'),
-```
-------------
-## get total price in cart
-```dart
-Text('Total Price: ${cartNotifier.getTotalPrice()}'),
-```
-------------
-## fetch cart items
-```dart
-          /// show cart items
-          Expanded(
-            child: ListView.builder(
-              itemCount: cartList.length,
-              itemBuilder: (context, index) {
-                /// access cart item
-                final cartItem = cartList[index];
-                return ListTile(
-                  title: Text(cartItem.name),
 
-                  /// get price for item
-                  subtitle: Text(cartNotifier.getPriceForItem(cartItem).toString()),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          /// decrement item quantity
-                          cartNotifier.decrementItemQuantity(cartItem);
-                        },
-                        icon: const Icon(Icons.remove),
-                      ),
-                      Text(cartItem.quantity.toString()),
-                      IconButton(
-                        onPressed: () {
-                          /// increment item quantity
-                          cartNotifier.incrementItemQuantity(cartItem);
-                        },
-                        icon: const Icon(Icons.add),
-                      ),
-                    ],
+          // ----------------- Cart Widget ----------------- //
+          /// cart widget with custom builder for cart list which contains controller to add, remove, clear cart
+          body: CartWidget(
+            cartBuilder: (controller) {
+              return Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: controller.cartList.length,
+                      itemBuilder: (context, index) {
+                        final cartItem = controller.cartList[index];
+                        return ListTile(
+                          title: Text(cartItem.name),
+                          subtitle: Text(controller
+                              .getPriceForItem(cartItem, updatePrice: true)
+                              .toString()),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  controller.incrementItemQuantity(cartItem);
+                                },
+                                icon: const Icon(Icons.add),
+                              ),
+                              Text(cartItem.quantity.toString()),
+                              IconButton(
+                                onPressed: () {
+                                  controller.decrementItemQuantity(cartItem);
+                                },
+                                icon: const Icon(Icons.remove),
+                              ),
+                            ],
+                          ),
+                          leading: IconButton(
+                            icon: const Icon(Icons.remove),
+                            onPressed: () {
+                              controller.removeItem(cartItem);
+                            },
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                  leading: IconButton(
-                    onPressed: () {
-                      /// remove item from cart
-                      cartNotifier.removeItem(cartItem);
+
+                  // ----------------- add to cart button ----------------- //
+                  /// add to cart button with action after add and model to add
+                  AddToCartButton(
+                    actionAfterAdding: () {
+                      log("item added", name: "item added");
                     },
-                    icon: const Icon(Icons.delete),
+                    cartModel: CartModel(
+                        id: DateTime.now().millisecondsSinceEpoch,
+                        name: 'Test',
+                        price: 100,
+                        image: ""),
+                    child: Container(
+                      height: 50,
+                      margin: const EdgeInsets.all(10),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          "Add to cart",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
                   ),
-                );
-              },
-            ),
+
+                  // ----------------- Total price ----------------- //
+                  /// total price of cart
+                  Text("Total Price : ${controller.getTotalPrice()}"),
+                ],
+              );
+            },
           ),
+        ));
+  }
+}
 ```
+
+## Types Of Cart
+
+### Trolley Cart
+![trolley](https://user-images.githubusercontent.com/91211054/210039423-1a500c3c-8097-4a64-9257-38cb324e71f9.png)
+```dart 
+class TrolleyCartScreen extends StatelessWidget {
+  const TrolleyCartScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      body: SafeArea(
+          child: Padding(
+        padding: const EdgeInsets.only(top: 15),
+        child: Column(
+          children: [
+            const TrolleyHeader(),
+            const SizedBox(
+              height: 10,
+            ),
+            const ShoppingCartTrolley(quantityCardDirection: Direction.vertical),
+            const SizedBox(
+              height: 10,
+            ),
+            TrolleyCheckOut(
+              shippingFee: 10,
+              onCheckout: () {},
+            ),
+          ],
+        ),
+      )),
+    );
+  }
+}
+
+```
+
