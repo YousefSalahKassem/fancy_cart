@@ -12,7 +12,7 @@
 1: Features<br />
 2: How it works<br />
 3: Explain each method inside notifier<br />
-4: Example how to implement it
+4: Example how to implement it <br />
 5: Types of Cart
 ------------
 # Features
