@@ -1,6 +1,7 @@
 name: fancy_cart
 description: cart package for flutter which is easy to use and support all features, you can use it in your app to make it more fancy
 version: 0.0.1
+homepage: https://github.com/YousefSalahKassem/fancy_cart
 
 environment:
   sdk: '>=2.18.6 <3.0.0'
