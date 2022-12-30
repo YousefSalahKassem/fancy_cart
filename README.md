@@ -165,6 +165,10 @@ void main() async {
 ## Example
 
 ```dart
+import 'dart:developer';
+import 'package:fancy_cart/fancy_cart.dart';
+import 'package:flutter/material.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // initialize fancy cart
@@ -260,7 +264,7 @@ class _MyAppState extends State<MyApp> {
                     actionAfterAdding: () {
                       log("item added", name: "item added");
                     },
-                    cartModel: CartModel(
+                    cartModel: CartItem(
                         id: DateTime.now().millisecondsSinceEpoch,
                         name: 'Test',
                         price: 100,
@@ -281,7 +285,6 @@ class _MyAppState extends State<MyApp> {
                       ),
                     ),
                   ),
-
                   // ----------------- Total price ----------------- //
                   /// total price of cart
                   Text("Total Price : ${controller.getTotalPrice()}"),
