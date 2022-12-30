@@ -1,7 +1,8 @@
 name: fancy_cart
 description: cart package for flutter which is easy to use and support all features, you can use it in your app to make it more fancy
-version: 0.0.1
+version: 0.0.4
 homepage: https://github.com/YousefSalahKassem/fancy_cart
+
 
 environment:
   sdk: '>=2.18.6 <3.0.0'
@@ -16,7 +17,7 @@ dependencies:
   hive_flutter: ^1.1.0
   hive_test: ^1.0.1
   # State Management
-  flutter_riverpod: ^1.0.4
+  flutter_riverpod: ^2.1.3
 
   # Depend
   equatable: ^2.0.5

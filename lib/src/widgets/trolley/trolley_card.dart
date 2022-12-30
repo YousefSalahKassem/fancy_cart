@@ -1,9 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fancy_cart/fancy_cart.dart';
-import 'package:fancy_cart/src/widgets/trolley/trolley_quantity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../bloc/models/cart_item.dart';
 import '../../bloc/providers/cart_notifier.dart';
 
 
