@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
-import '../../data/cart_service.dart';
-import '../models/cart_item.dart';
+import '../../fancy_cart.dart';
+import '../data/cart_service.dart';
 
 class CartNotifier extends ChangeNotifier {
   static final provider = ChangeNotifierProvider.autoDispose((ref) => CartNotifier());

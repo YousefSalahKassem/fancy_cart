@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../bloc/providers/cart_notifier.dart';
+import '../notifiers/cart_notifier.dart';
 
 void initializeFancyCart(
     {

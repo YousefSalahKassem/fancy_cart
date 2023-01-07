@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../../fancy_cart.dart';
-import '../../bloc/providers/cart_notifier.dart';
 
 class ShoppingCartTrolley extends ConsumerWidget {
   final bool swipeToDelete;

@@ -1,5 +1,6 @@
 import 'package:hive_flutter/adapters.dart';
-import '../bloc/models/cart_item.dart';
+
+import '../models/cart_item.dart';
 
 class CartService {
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../bloc/providers/cart_notifier.dart';
+import '../../../fancy_cart.dart';
 
 class TrolleyCheckOut extends ConsumerWidget {
   final int shippingFee;

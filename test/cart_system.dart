@@ -1,5 +1,4 @@
-import 'package:fancy_cart/src/bloc/models/cart_item.dart';
-import 'package:fancy_cart/src/bloc/providers/cart_notifier.dart';
+import 'package:fancy_cart/fancy_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
