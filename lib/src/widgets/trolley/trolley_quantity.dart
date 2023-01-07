@@ -2,8 +2,6 @@ import '../../../fancy_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../models/cart_item.dart';
-
 enum Direction { vertical, horizontal }
 
 class TrolleyQuantity extends ConsumerWidget {

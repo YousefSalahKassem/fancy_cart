@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../fancy_cart.dart';
-import 'modal_cart.dart';
-import 'modal_checkout_buttons.dart';
-import 'modal_header.dart';
-import 'modal_sub_total.dart';
+
 
 class ModalCartScreen extends ConsumerStatefulWidget {
   final Function(List<CartItem> cartList) checkOutButton;
