@@ -1,9 +1,12 @@
+<img src= "https://user-images.githubusercontent.com/91211054/211157138-0ae0bb2a-aa93-4fee-ab0f-b5058abaabe0.jpeg" width="200" alt="Avatar">
+
 # Fancy Cart Package
 
 ### Welcome to the Fancy Cart package this package depend on:
 
 1: Hive Local Storage<br />
 2: Riverpod State Management
+
 
 ### so before we start , if you dont know more about Hive and Riverpod , recommend you to visit  this website [Hive](https://docs.hivedb.dev/#/) and [riverpod](https://riverpod.dev)
 ------------
@@ -21,7 +24,7 @@
 3: clear cart list<br />
 4: increment and decrement numer of quantities<br />
 5: get total price for cart<br />
-6: get total items inside cart
+6: get total items inside cart<br />
 7: types of fancy cart pages
 
 ------------  
@@ -335,3 +338,56 @@ class TrolleyCartScreen extends StatelessWidget {
 
 ```
 
+### Modal Cart
+![Modal Cart](https://user-images.githubusercontent.com/91211054/211157454-f1ba490e-2b60-49a0-b858-cfa38acb7f45.png)
+```dart 
+class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: AddToCartButton(
+          actionAfterAdding: () {
+            BottomSheetCart.show(
+                context: context,
+                checkOutButton: (cartList){
+                  log(cartList.length.toString());
+                },
+                checkOutPaypalButton: (cartList){
+                  log(cartList.length.toString());
+                }
+            );
+          },
+          cartModel: CartModel(
+            id: 9998,
+            name: 'Isabella Chair',
+            price: 250.00,
+            image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRASO0ZI6-YXskH0epPedmjRp-Ks01bfGobuYQ-pirFNjg0QOwF37pV_MHQA4bcGn3dMHk&usqp=CAU",
+            additionalData: {
+              "color": "pink",
+            },
+          ),
+          child: Container(
+            height: 50,
+            margin: const EdgeInsets.all(10),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Center(
+              child: Text(
+                "Add to cart",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
