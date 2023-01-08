@@ -9,7 +9,7 @@ void main() {
     final provider = ProviderContainer(
       overrides: [
         CartNotifier.provider.overrideWithProvider(
-          ChangeNotifierProvider.autoDispose((ref) => CartNotifier()),
+          ChangeNotifierProvider((ref) => CartNotifier()),
         ),
       ],
     );

@@ -5,7 +5,7 @@ import '../../fancy_cart.dart';
 import '../data/cart_service.dart';
 
 class CartNotifier extends ChangeNotifier {
-  static final provider = ChangeNotifierProvider.autoDispose((ref) => CartNotifier());
+  static final provider = ChangeNotifierProvider((ref) => CartNotifier());
 
   final CartService _cartService = CartService();
 
