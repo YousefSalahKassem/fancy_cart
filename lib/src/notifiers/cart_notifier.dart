@@ -33,6 +33,7 @@ class CartNotifier extends ChangeNotifier {
     CartItem cart, {
     bool isIncrementQuantity = false,
     Function? actionIfExist,
+    Function? actionAfterAdded,
   }) async {
     bool itemExists =
         _cartList.any((existingItem) => existingItem.id == cart.id);
@@ -43,12 +44,18 @@ class CartNotifier extends ChangeNotifier {
             _cartList.indexWhere((existingItem) => existingItem.id == cart.id);
         incrementItemQuantity(_cartList[index]);
         getPriceForItem(cart);
+        if (actionAfterAdded != null) {
+          actionAfterAdded();
+        }
       } else if (actionIfExist != null) {
         actionIfExist();
       }
     } else {
       await _cartService.add(cart);
       _cartList.add(cart);
+      if (actionAfterAdded != null) {
+        actionAfterAdded();
+      }
     }
 
     notifyListeners();

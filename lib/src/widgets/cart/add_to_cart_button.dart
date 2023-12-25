@@ -20,12 +20,8 @@ class AddToCartButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () {
-        ref
-            .read(CartNotifier.provider.notifier)
-            .addItem(cartModel, actionIfExist: actionIfExist);
-        if (actionAfterAdding != null) {
-          actionAfterAdding!();
-        }
+        ref.read(CartNotifier.provider.notifier).addItem(cartModel,
+            actionIfExist: actionIfExist, actionAfterAdded: actionAfterAdding);
       },
       child: child,
     );
