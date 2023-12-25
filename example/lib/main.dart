@@ -117,9 +117,11 @@ class MyCart extends StatelessWidget {
                     final cartItem = controller.cartList[index];
                     return ListTile(
                       title: Text(cartItem.name),
-                      subtitle: Text(controller
-                          .getPriceForItem(cartItem, updatePrice: true)
-                          .toString()),
+                      subtitle: Text(
+                        controller
+                            .getPriceForItem(cartItem, updatePrice: true)
+                            .toString(),
+                      ),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
