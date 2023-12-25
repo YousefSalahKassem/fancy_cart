@@ -6,19 +6,21 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   setUp(() => CartNotifier.initialize());
   testWidgets("test cart system package", (tester) async {
-    await tester.pumpWidget(ProviderScope(child: Consumer(builder: (_, ref, __) {
+    await tester
+        .pumpWidget(ProviderScope(child: Consumer(builder: (_, ref, __) {
       final cartNotifier = ref.watch(CartNotifier.provider.notifier);
       final cartList = ref.watch(CartNotifier.provider).cartList;
       return MaterialApp(
           home: Scaffold(
         appBar: AppBar(
-          title: Text("Cart ${cartNotifier.getNumberOfItemsInCart().toString()}"),
+          title:
+              Text("Cart ${cartNotifier.getNumberOfItemsInCart().toString()}"),
           leading: IconButton(
             icon: const Icon(Icons.plus_one),
             onPressed: () {
               cartNotifier.addItem(
                 CartItem(
-                  id: DateTime.now().millisecondsSinceEpoch,
+                  id: DateTime.now().millisecondsSinceEpoch.toString(),
                   name: 'Item ${cartList.length + 1}',
                   price: 100,
                   image: '',
@@ -34,7 +36,7 @@ void main() {
               onPressed: () {
                 cartNotifier.addItem(
                   CartItem(
-                    id: DateTime.now().millisecondsSinceEpoch,
+                    id: DateTime.now().millisecondsSinceEpoch.toString(),
                     name: 'Item ${cartList.length + 1}',
                     price: 100,
                     image: '',
@@ -56,7 +58,7 @@ void main() {
           children: [
             SizedBox(
               height: 500,
-              child:  ListView.builder(
+              child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: cartList.length,
                 itemBuilder: (context, index) {
@@ -78,7 +80,8 @@ void main() {
                           IconButton(
                             icon: const Icon(Icons.dangerous),
                             onPressed: () {
-                              cartNotifier.incrementItemQuantity(cartList[index]);
+                              cartNotifier
+                                  .incrementItemQuantity(cartList[index]);
                             },
                           ),
                           // text showing quantity
@@ -86,7 +89,8 @@ void main() {
                           IconButton(
                             icon: const Icon(Icons.remove),
                             onPressed: () {
-                              cartNotifier.decrementItemQuantity(cartList[index]);
+                              cartNotifier
+                                  .decrementItemQuantity(cartList[index]);
                             },
                           ),
                         ],
@@ -98,8 +102,7 @@ void main() {
           ],
         ),
       ));
-    }))
-    );
+    })));
 
     // clear cart
     await tester.tap(find.byIcon(Icons.clear));

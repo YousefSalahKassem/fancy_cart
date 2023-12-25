@@ -5,7 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   setUp(() => CartNotifier.initialize());
   group("testing cart system package", () {
-
     final provider = ProviderContainer(
       overrides: [
         CartNotifier.provider.overrideWithProvider(
@@ -19,7 +18,7 @@ void main() {
     test('add item to cart ', () {
       cartNotifier.addItem(
         CartItem(
-          id: DateTime.now().millisecondsSinceEpoch,
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
           name: 'Item ${cartList.length + 1}',
           price: 100,
           image: '',

@@ -55,7 +55,7 @@ class _MyPageState extends State<MyPage> {
               });
             },
             cartModel: CartItem(
-                id: time,
+                id: time.toString(),
                 name: 'Test',
                 price: 100,
                 image: ""),

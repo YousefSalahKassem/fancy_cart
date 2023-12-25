@@ -5,7 +5,7 @@ part 'cart_item.g.dart';
 @HiveType(typeId: 1)
 class CartItem extends HiveObject with EquatableMixin {
   @HiveField(0)
-  final int id;
+  final String id;
   @HiveField(1)
   final String name;
   @HiveField(2)
@@ -16,7 +16,6 @@ class CartItem extends HiveObject with EquatableMixin {
   int quantity;
   @HiveField(5)
   final Map<String, dynamic> additionalData;
-
 
   CartItem({
     required this.id,
