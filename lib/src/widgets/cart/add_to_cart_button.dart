@@ -8,6 +8,7 @@ class AddToCartButton extends ConsumerWidget {
   final Function? actionIfExist;
   final CartItem cartModel;
 
+
   const AddToCartButton({
     Key? key,
     required this.child,
