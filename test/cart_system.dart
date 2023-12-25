@@ -2,9 +2,14 @@ import 'package:fancy_cart/fancy_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 void main() {
-  setUp(() => CartNotifier.initialize());
+  setUp(() async {
+    await Hive.initFlutter();
+    Hive.registerAdapter(CartItemAdapter());
+    await Hive.openBox<CartItem>('cart');
+  });
   testWidgets("test cart system package", (tester) async {
     await tester
         .pumpWidget(ProviderScope(child: Consumer(builder: (_, ref, __) {

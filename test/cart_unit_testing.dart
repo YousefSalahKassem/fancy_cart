@@ -3,12 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  setUp(() => CartNotifier.initialize());
+  setUp(() => CartNotifier());
   group("testing cart system package", () {
     final provider = ProviderContainer(
       overrides: [
         CartNotifier.provider.overrideWithProvider(
-          ChangeNotifierProvider((ref) => CartNotifier()),
+          ChangeNotifierProvider.autoDispose((ref) => CartNotifier()),
         ),
       ],
     );

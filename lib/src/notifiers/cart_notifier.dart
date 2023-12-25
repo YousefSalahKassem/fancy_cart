@@ -20,11 +20,6 @@ class CartNotifier extends ChangeNotifier {
 
   /// init hive and register cart item adapter then open cart box to store cart items,
   /// as its depend on hive so we need to initialize it in main.dart
-  static initialize() async {
-    await Hive.initFlutter();
-    Hive.registerAdapter(CartItemAdapter());
-    await Hive.openBox<CartItem>('cart');
-  }
 
   /// add item to cart,
   ///
