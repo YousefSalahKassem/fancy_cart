@@ -169,11 +169,4 @@ class CartNotifier extends ChangeNotifier {
       return _cartList.length;
     }
   }
-
-  /// dispose hive
-  @override
-  void dispose() {
-    _cartService.dispose();
-    super.dispose();
-  }
 }
