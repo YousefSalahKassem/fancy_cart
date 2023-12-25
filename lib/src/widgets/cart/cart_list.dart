@@ -10,7 +10,7 @@ class CartWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(CartNotifier.provider.notifier);
+    final controller = ref.watch(CartNotifier.provider);
 
     final cartList = controller.cartList;
 
