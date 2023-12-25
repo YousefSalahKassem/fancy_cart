@@ -10,12 +10,12 @@ class CartNotifier extends ChangeNotifier {
   final CartService _cartService = CartService();
 
   List<CartItem> _cartList = [];
+
   List<CartItem> get cartList => _cartList;
 
   CartNotifier() {
     fetchCart();
   }
-
 
   /// init hive and register cart item adapter then open cart box to store cart items,
   /// as its depend on hive so we need to initialize it in main.dart
@@ -25,24 +25,48 @@ class CartNotifier extends ChangeNotifier {
     await Hive.openBox<CartItem>('cart');
   }
 
-
   /// add item to cart,
   ///
   /// if item already exist in cart then update its quantity
   /// else add it to cart
-  Future<void> addItem(CartItem cart) async {
-    if (_cartList.contains(cart)) {
-      final int index = _cartList.indexOf(cart);
-      incrementItemQuantity(_cartList[index]);
-      getPriceForItem(cart);
+  Future<void> addItem(
+    CartItem cart, {
+    bool isIncrementQuantity = false,
+    Function? actionIfExist,
+  }) async {
+    bool itemExists =
+        _cartList.any((existingItem) => existingItem.id == cart.id);
+
+    if (itemExists) {
+      if (isIncrementQuantity) {
+        final int index =
+            _cartList.indexWhere((existingItem) => existingItem.id == cart.id);
+        incrementItemQuantity(_cartList[index]);
+        getPriceForItem(cart);
+      } else if (actionIfExist != null) {
+        actionIfExist();
+      }
     } else {
       await _cartService.add(cart);
       _cartList.add(cart);
     }
-    notifyListeners();
 
+    notifyListeners();
   }
 
+  Future<void> addItemsToList(List<CartItem> itemsToAdd) async {
+    for (final CartItem newItem in itemsToAdd) {
+      bool itemExists =
+          _cartList.any((existingItem) => existingItem.id == newItem.id);
+
+      if (!itemExists) {
+        await _cartService.add(newItem);
+        _cartList.add(newItem);
+      }
+    }
+
+    notifyListeners();
+  }
 
   /// remove item from cart
   Future<void> removeItem(CartItem cart) async {
@@ -51,13 +75,11 @@ class CartNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-
   /// get total items in cart
   Future<void> fetchCart() async {
     _cartList = await _cartService.fetch();
     notifyListeners();
   }
-
 
   /// clear cart
   Future<void> clearCart() async {
@@ -66,7 +88,6 @@ class CartNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-
   /// increment item quantity and update its price
   Future<void> incrementItemQuantity(CartItem cart) async {
     cart.quantity++;
@@ -74,9 +95,7 @@ class CartNotifier extends ChangeNotifier {
     getPriceForItem(cart);
     await _cartService.updatePrice(cart, cart.price);
     notifyListeners();
-
   }
-
 
   /// decrement item quantity,
   ///
@@ -87,7 +106,10 @@ class CartNotifier extends ChangeNotifier {
   ///
   /// there is an option [actionAfterDelete] to make action after delete item like showing snackBar, etc.
   /// there is an option [notDecrementedAction] to make action if item quantity is less than 1 and [deleteOption] is false like showing snackBar, etc.
-  Future<void> decrementItemQuantity(CartItem cart, {bool deleteOption = false,Function? actionAfterDelete, Function? notDecrementedAction}) async {
+  Future<void> decrementItemQuantity(CartItem cart,
+      {bool deleteOption = false,
+      Function? actionAfterDelete,
+      Function? notDecrementedAction}) async {
     if (cart.quantity > 1) {
       cart.quantity--;
       await _cartService.updateQuantity(cart, cart.quantity);
@@ -97,17 +119,16 @@ class CartNotifier extends ChangeNotifier {
     } else {
       if (deleteOption) {
         await removeItem(cart);
-        if(actionAfterDelete!=null){
+        if (actionAfterDelete != null) {
           actionAfterDelete();
         }
       } else {
-        if(notDecrementedAction!=null){
+        if (notDecrementedAction != null) {
           notDecrementedAction();
         }
       }
     }
   }
-
 
   /// get total price of all items in cart
   double getTotalPrice() {
@@ -118,26 +139,24 @@ class CartNotifier extends ChangeNotifier {
     return totalPrice;
   }
 
-
   /// get price for each item in cart
   /// you have an option [updatePrice] to update item price in cart
   /// if you set it to true then it will update item price in cart by multiplying item price by item quantity
   /// else it will return item price without updating it
   double getPriceForItem(CartItem cart, {bool updatePrice = false}) {
-    if(updatePrice){
+    if (updatePrice) {
       final double total = cart.quantity * cart.price;
       return total;
     }
     return cart.price;
   }
 
-
   /// get number of items in cart
   ///
   /// if [needToIncludeQuantity] is true then it will return total number of items in cart including quantity
   /// else it will return number of items in cart
   int getNumberOfItemsInCart({bool needToIncludeQuantity = true}) {
-    if (needToIncludeQuantity){
+    if (needToIncludeQuantity) {
       int totalQuantity = 0;
       for (final CartItem cart in _cartList) {
         totalQuantity += cart.quantity;
@@ -147,7 +166,6 @@ class CartNotifier extends ChangeNotifier {
       return _cartList.length;
     }
   }
-
 
   /// dispose hive
   @override
