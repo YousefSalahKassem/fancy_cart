@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../fancy_cart.dart';
+
 class CartWidget extends ConsumerWidget {
-  final Widget Function(CartNotifier controller) cartBuilder;
+  final Widget Function(CartNotifier controller, List<CartItem> cart)
+      cartBuilder;
 
   const CartWidget({Key? key, required this.cartBuilder}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(CartNotifier.provider);
     final controller = ref.watch(CartNotifier.provider.notifier);
-    return cartBuilder(controller);
+
+    final cartList = controller.cartList;
+
+    return cartBuilder(controller, cartList);
   }
 }

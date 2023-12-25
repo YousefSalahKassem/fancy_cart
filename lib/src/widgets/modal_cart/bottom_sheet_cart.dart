@@ -68,103 +68,103 @@ class _BottomSheetCartState extends ConsumerState<BottomSheetCart> {
                 height: 2,
                 color: Colors.grey.withOpacity(0.15),
               ),
-              CartWidget(cartBuilder: (controller) {
+              CartWidget(cartBuilder: (controller, _) {
                 return Expanded(
                     child: ListView.separated(
-                      itemCount: controller.cartList.take(2).length,
-                      itemBuilder: (context, index) {
-                        final item = controller.cartList[index];
-                        return Container(
-                          margin: const EdgeInsets.symmetric(vertical: 15),
-                          child: Row(
-                            children: [
-                              Container(
-                                height: 100,
-                                width: 100,
-                                margin: const EdgeInsets.only(left: 5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  image: DecorationImage(
-                                      image: NetworkImage(item.image),
-                                      fit: BoxFit.cover),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 1,
-                                      blurRadius: 7,
-                                      offset: const Offset(
-                                          0, 3), // changes position of shadow
-                                    ),
-                                  ],
+                  itemCount: controller.cartList.take(2).length,
+                  itemBuilder: (context, index) {
+                    final item = controller.cartList[index];
+                    return Container(
+                      margin: const EdgeInsets.symmetric(vertical: 15),
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 100,
+                            width: 100,
+                            margin: const EdgeInsets.only(left: 5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
+                                  image: NetworkImage(item.image),
+                                  fit: BoxFit.cover),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 1,
+                                  blurRadius: 7,
+                                  offset: const Offset(
+                                      0, 3), // changes position of shadow
                                 ),
-                              ),
-                              const SizedBox(
-                                width: 15,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  item.name,
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  "Color: ${item.additionalData["color"]} | item #${item.id.toString().substring(item.id.toString().length - 4)}",
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      item.name,
+                                      "\$${item.price}",
                                       style: const TextStyle(
                                           fontSize: 16,
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.w500,
                                           color: Colors.black),
                                     ),
-                                    const SizedBox(
-                                      height: 5,
+                                    GestureDetector(
+                                      onTap: () {
+                                        controller.removeItem(item);
+                                      },
+                                      child: const Text(
+                                        "Remove",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.grey),
+                                      ),
                                     ),
-                                    Text(
-                                      "Color: ${item.additionalData["color"]} | item #${item.id.toString().substring(item.id.toString().length - 4)}",
-                                      style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.grey),
-                                    ),
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "\$${item.price}",
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            controller.removeItem(item);
-                                          },
-                                          child: const Text(
-                                            "Remove",
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.grey),
-                                          ),
-                                        ),
-                                      ],
-                                    )
                                   ],
-                                ),
-                              ),
-                            ],
+                                )
+                              ],
+                            ),
                           ),
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return Container(
-                          height: 2,
-                          color: Colors.grey.withOpacity(0.15),
-                        );
-                      },
-                    ));
+                        ],
+                      ),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return Container(
+                      height: 2,
+                      color: Colors.grey.withOpacity(0.15),
+                    );
+                  },
+                ));
               }),
               Container(
                 height: 2,
@@ -179,10 +179,10 @@ class _BottomSheetCartState extends ConsumerState<BottomSheetCart> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => ModalCartScreen(
-                              checkOutButton: widget.checkOutButton,
-                              checkOutPaypalButton:
-                              widget.checkOutPaypalButton,
-                            )));
+                                  checkOutButton: widget.checkOutButton,
+                                  checkOutPaypalButton:
+                                      widget.checkOutPaypalButton,
+                                )));
                   },
                   color: Colors.black,
                   shape: RoundedRectangleBorder(

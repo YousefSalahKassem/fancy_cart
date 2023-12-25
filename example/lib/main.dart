@@ -25,6 +25,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorKey: _navKey,
+
         /// Example of using Fancy Cart
         home: const MyPage());
   }
@@ -49,16 +50,14 @@ class _MyPageState extends State<MyPage> {
           // ----------------- Add To Cart ----------------- //
           AddToCartButton(
             actionAfterAdding: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const MyCart()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const MyCart()));
               setState(() {
                 time = DateTime.now().millisecondsSinceEpoch;
               });
             },
             cartModel: CartItem(
-                id: time.toString(),
-                name: 'Test',
-                price: 100,
-                image: ""),
+                id: time.toString(), name: 'Test', price: 100, image: ""),
             child: Container(
               height: 50,
               margin: const EdgeInsets.all(10),
@@ -80,7 +79,6 @@ class _MyPageState extends State<MyPage> {
     );
   }
 }
-
 
 class MyCart extends StatelessWidget {
   const MyCart({Key? key}) : super(key: key);
@@ -109,7 +107,7 @@ class MyCart extends StatelessWidget {
         ),
         // ----------------- Cart Widget ----------------- //
         /// cart widget with custom builder for cart list which contains controller to add, remove, clear cart
-        body: CartWidget(cartBuilder: (controller) {
+        body: CartWidget(cartBuilder: (controller, _) {
           return Column(
             children: [
               Expanded(
